@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>body {
+    font-family: Arial, sans-serif;
+    background-color:brown;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background:grey;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input, select, button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+button {
+    background: #77aaff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #005bbb;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background: #f9f9f9;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 3px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+li.complete {
+    text-decoration: line-through;
+}
+
+.task-info {
+    flex-grow: 1;
+}
+
+.task-category, .task-due-date, .task-priority {
+    display: block;
+    font-size: 0.9em;
+    color: #666;
+}
+
+button.delete, button.complete {
+    background: #ff4444;
+    border: none;
+    padding: 5px 10px;
+    color: #fff;
+    cursor: pointer;
+    margin-left: 10px;
+    border-radius: 3px;
+}
+
+button.complete {
+    background: #44ff44;
+}
+</style>
+</head>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const taskForm = document.getElementById('task-form');
+    const taskInput = document.getElementById('task-input');
+    const categoryInput = document.getElementById('category-input');
+    const dueDateInput = document.getElementById('due-date-input');
+    const priorityInput = document.getElementById('priority-input');
+    const taskList = document.getElementById('task-list');
+
+    taskForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        addTask();
+    });
+
+    function addTask() {
+        const taskText = taskInput.value;
+        const category = categoryInput.value;
+        const dueDate = dueDateInput.value;
+        const priority = priorityInput.value;
+
+        const li = document.createElement('li');
+
+        const taskInfo = document.createElement('div');
+        taskInfo.className = 'task-info';
+        taskInfo.innerHTML = `
+            <strong>${taskText}</strong>
+            <span class="task-category">Category: ${category}</span>
+            <span class="task-due-date">Due Date: ${dueDate}</span>
+            <span class="task-priority">Priority: ${priority}</span>
+        `;
+
+        const completeButton = document.createElement('button');
+        completeButton.className = 'complete';
+        completeButton.textContent = 'Complete';
+        completeButton.addEventListener('click', function() {
+            li.classList.toggle('complete');
+        });
+
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'delete';
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', function() {
+            taskList.removeChild(li);
+        });
+
+        li.appendChild(taskInfo);
+        li.appendChild(completeButton);
+        li.appendChild(deleteButton);
+
+        taskList.appendChild(li);
+
+        taskInput.value = '';
+        categoryInput.value = '';
+        dueDateInput.value = '';
+        priorityInput.value = '';
+    }
+});
+</script>
+<body>
+    <div class="container">
+        <h1>To-Do List</h1>
+        <form id="task-form">
+            <input type="text" id="task-input" placeholder="Enter a new task" required>
+            <input type="text" id="category-input" placeholder="Category" required>
+            <input type="date" id="due-date-input" required>
+            <select id="priority-input" required>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+            </select>
+            <button type="submit">Add Task</button>
+        </form>
+        <ul id="task-list"></ul>
+    </div>
+
+    
+</body>
+</html>
